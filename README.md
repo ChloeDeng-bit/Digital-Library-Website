@@ -69,8 +69,7 @@ Contains all included files for multiple uses.
 
 /Database:
 Contains files related to database setup and table creation.
-/Scripts:
-Code for building the database and tables.
+
 ### Note:
 The physical structure of the project folders might differ from the logical structure described above. In reality, all code files may reside directly within the `/Website` folder.
 
@@ -81,12 +80,11 @@ Partial search strings are supported, providing flexibility in searching for inf
 **Getting Started**
 To run the Digital Library Management System locally:
 
-Clone this repository to your machine.
-Set up the database with the necessary tables and relationships.
-Navigate to /Database/Scripts and run the database setup script.
+Clone this repository to your machine. Move all the code contained in the /Website folder into one main folder instead of having separate subfolders.
+Set up the database with the necessary tables and relationships. Navigate to /Database and run the database setup script.
 Configure the application settings.
 Run the web application.
-For detailed instructions, refer to the installation guide in the docs folder.
+
 
 Contributors
 Meiyun Deng
