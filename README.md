@@ -57,29 +57,24 @@ Receive a notification with the return date and associated borrowing cost.
 **Both Librarians and Borrowers can search for resources using a combination of ISBN, Title, Author, or Status.
 Partial search strings are supported, providing flexibility in searching for information.**
 
-**Project Structure**<br>
-/Website:
-
+## Project Structure
+/Website: 
 Contains all web-related files and folders.
 
-/Login and Register:
-
+* /Login and Register:
 Files related to user registration and login functionalities.
 
-/For Librarian:
-
++ /For Librarian:
 Functionalities specific to Librarians.
 
-/For Borrower:
 
+- /For Borrower:
 Functionalities specific to Borrowers.
 
-/Included Files:
-
+* /Included Files:
 Contains all included files for multiple uses.
 
 /Database:
-
 Contains files related to database setup and table creation.
 
 ### Note:
@@ -87,17 +82,16 @@ The physical structure of the project folders might differ from the logical stru
 
 
 
-**Getting Started**<br>
+## Getting Started
 To run the Digital Library Management System locally:
 
 Clone this repository to your machine. Move all the code contained in the /Website folder into one main folder instead of having separate subfolders.
 
-Set up the database with the necessary tables and relationships. Navigate to /Database and run the database setup script.
+Set up the database with the necessary tables and relationships by navigating to /Database and running the database setup script.
+
 Configure the application settings.
 
 Run the web application.
 
 
-Contributors
 
-Meiyun Deng
