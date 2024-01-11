@@ -1,16 +1,33 @@
+<!-- this file is for borrower to search book by related keyword,
+if borrower hasn't input keyword then display the form for inputing keyword,
+after submiting the keyword then display the correlated resource. -->
+
 <?php
-//session_start();
+session_start();
 $error=0;
 $Body="";
 $input=true;
 
-if(isset($_POST['submit'])){ // Check if form was submitted
+//keep session
+if (isset($_SESSION['userID'])){
+
+	$userID = $_SESSION['userID'];
+}
+else {
+	$Body .= "<p>You have not logged in or registered. Please return to the <a href='registerAndLogin.php'>Registration / Log In page</a>.</p>";
+	++$error;
+    echo "$error";
+}
+
+// Check if the keyword has been submitted and save it if so
+if(isset($_POST['submit'])){ 
 
     $keyword = $_POST['keyword']; // Get input text
     $message = "<h3>You have entered keyword: " . $keyword."</h3>";
     echo $message;
     $input=false;
-    //then start to search
+
+    //then start to search by keyword
     include("inc_digitalLibrary.php");
     $TableName = "resource";
    $sql = "SELECT * FROM $TableName where ISBN like '%$keyword%' or title like '%$keyword%' or author like '%$keyword%' or publisher like '%$keyword%' or status like '%$keyword%'";
@@ -19,7 +36,8 @@ if(isset($_POST['submit'])){ // Check if form was submitted
     while (($Row = mysqli_fetch_assoc($qRes))!= FALSE)
         $avaliable[] = $Row;
     mysqli_free_result($qRes);
-//mysqli_close($conn);
+
+//display all the related book
 echo "<h1>The resource correlated.</h1>";
 echo "<br/>";
 //table and header
@@ -52,21 +70,12 @@ else if (mysqli_num_rows($qRes) == 0) {
   echo "<p>sorry no resource can be found according to your key word, please try another keyword.</p>";
 }
 }
-if (isset($_SESSION['userID'])){
 
-	$userID = $_SESSION['userID'];
-    //echo "session set successfull";
-}
-else {
-	$Body .= "<p>You have not logged in or registered. Please return to the <a href='registerAndLogin.php'>Registration / Log In page</a>.</p>";
-	++$error;
-    echo "$error";
-}
+//if the borrower has not input the keyword, display the form for borrower to input keyword
 if($input==true){ 
    $Body .='<form method="post" action="" >';
         
     $Body .='<p>Please enter the key word to search the resource: <input type="text" name="keyword" /></p>';
-    //$Body .='<p>please enter the date of borrowing: <input type="date" name="password" /></p>';
     $Body .='<p><input type="submit" name="submit" value="submit" /></p>';
     $Body .='</form>';
 }
