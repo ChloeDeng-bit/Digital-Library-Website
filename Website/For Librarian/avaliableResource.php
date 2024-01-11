@@ -1,4 +1,4 @@
-//This file is to display all the available resource to the user
+<!-- this file is to display all the avaliable resource to user -->
 <?php
 
 $error=0;
