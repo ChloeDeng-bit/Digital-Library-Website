@@ -1,10 +1,13 @@
-<?php
-//session_start();
-$error=0;
-if (isset($_SESSION['userID'])){
+<!-- This file is to display all the book this borrower has borrowed  -->
 
+<?php
+session_start();
+$error=0;
+
+//keep session
+if (isset($_SESSION['userID'])){
 	$userID = $_SESSION['userID'];
-    //echo "session set successfull";
+
 }
 else {
 	$Body .= "<p>You have not logged in or registered. Please return to the <a href='registerAndLogin.php'>Registration / Log In page</a>.</p>";
@@ -18,7 +21,8 @@ include("inc_digitalLibrary.php");
 if ($error > 0) {
     echo "<p>Please use your browser's BACK button to return " . " to the form and fix the errors indicated.</p>\n";
 }
-//add table
+
+//display the borrowed book of this borrower according to user ID
 if ($error == 0) {
 $TableName = "resource";
 $sql = "SELECT * FROM $TableName where borrowerID ='".$userID."'";
