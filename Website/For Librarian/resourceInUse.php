@@ -1,10 +1,11 @@
+<!-- This file is to display all the books that in use -->
+
 <?php
-//session_start();
+session_start();
 $error=0;
 if (isset($_SESSION['userID'])){
 
 	$userID = $_SESSION['userID'];
-    //echo "session set successfull";
 }
 else {
 	$Body .= "<p>You have not logged in or registered. Please return to the <a href='registerAndLogin.php'>Registration / Log In page</a>.</p>";
@@ -18,7 +19,8 @@ include("inc_digitalLibrary.php");
 if ($error > 0) {
     echo "<p>Please use your browser's BACK button to return " . " to the form and fix the errors indicated.</p>\n";
 }
-//add table
+
+//select in borrow book information from table and display
 if ($error == 0) {
 $TableName = "resource";
 $sql = "SELECT * FROM $TableName where status='in_borrow'";
@@ -27,6 +29,7 @@ if (mysqli_num_rows($qRes) > 0) {
     while (($Row = mysqli_fetch_assoc($qRes))!= FALSE)
         $avaliable[] = $Row;
     mysqli_free_result($qRes);
+
 //mysqli_close($conn);
 echo "<h1>Resource in borrow</h1>";
 
@@ -53,7 +56,7 @@ foreach ($avaliable as $a) {
 
             
             echo $a['status']    .":<a href='changeStatus.php?" . SID ."&status=" . $a['status'] ."&costP=" . $a['cost_per_day'] . "&bookID=" . $a['bookNo'] . "'>"."change status</a>";
-            //echo "<a href='myDelete.php?" . SID . "&FCode=" . $facility['FCode'] ."&StudentID=" . $studentID . "'>enrollment</a>";
+            
     echo "</td>\n";
     echo "</tr>\n";
 
@@ -66,5 +69,5 @@ else{
     echo "there is no any resource avaliable.\n";
 }
 
+?>
 
-} 
