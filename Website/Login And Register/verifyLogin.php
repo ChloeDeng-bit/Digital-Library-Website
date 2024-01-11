@@ -1,7 +1,7 @@
-//this file is to verify login information
+<!--this file is to verify login information-->
 
-//initialize session
 <?php
+//initialize session
 session_start();
 ?>
 
