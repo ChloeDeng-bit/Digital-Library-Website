@@ -1,10 +1,13 @@
+<!-- This file is to display all the book that is in borrow, but borrowers don't have the access to change the book status -->
 <?php
-//session_start();
+session_start();
 $error=0;
+
+//keep session
 if (isset($_SESSION['userID'])){
 
 	$userID = $_SESSION['userID'];
-    //echo "session set successfull";
+
 }
 else {
 	$Body .= "<p>You have not logged in or registered. Please return to the <a href='registerAndLogin.php'>Registration / Log In page</a>.</p>";
@@ -18,7 +21,8 @@ include("inc_digitalLibrary.php");
 if ($error > 0) {
     echo "<p>Please use your browser's BACK button to return " . " to the form and fix the errors indicated.</p>\n";
 }
-//add table
+
+//select all the book resource that in borrow
 if ($error == 0) {
 $TableName = "resource";
 $sql = "SELECT * FROM $TableName where status='in_borrow'";
@@ -27,7 +31,8 @@ if (mysqli_num_rows($qRes) > 0) {
     while (($Row = mysqli_fetch_assoc($qRes))!= FALSE)
         $avaliable[] = $Row;
     mysqli_free_result($qRes);
-//mysqli_close($conn);
+
+//display all the book resouce that in borrow
 echo "<h1>Resource in borrow</h1>";
 
 //table and header
