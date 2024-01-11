@@ -1,10 +1,13 @@
+<!-- This file is for log out and destroy the session. -->
+
 <?php
-#when you login, the session will be destroyed
-#start session
+//when you login, the session will be destroyed
+
+//start session
 session_start();
-#the session array will be empty
+//the session array will be empty
 $_SESSION = array();
-#destroy session
+//destroy session
 session_destroy();
 
 echo "<p>You have logged out this web page.</p>";
