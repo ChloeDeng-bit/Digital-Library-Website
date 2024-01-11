@@ -1,3 +1,4 @@
+<!--This file contains navigation button for borrower's main page-->
 
 <table border='0' width='500%'>
     <tr>
