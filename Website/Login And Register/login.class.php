@@ -1,3 +1,4 @@
+<!-- This file build the login class with the function for verification and checking user type -->
 <?php
 //build a login class
 class login {
