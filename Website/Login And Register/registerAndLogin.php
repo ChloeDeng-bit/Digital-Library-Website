@@ -1,7 +1,8 @@
-//This file is the interface that allows users to register or login.
+<!--This file is the interface that allows users to register or login.-->
 
-//set up session
+
 <?php
+//set up session
 session_start();
 $_SESSION = array();
 session_destroy();
@@ -21,7 +22,7 @@ session_destroy();
     <p>If you're a new user, please fill out the top form to register. Returning users, kindly complete the second form to log in.</p>
     <hr/>
 
-    //the form for new user to register
+    <!--the form for new user to register-->
     <h3>New User Registration</h3>
 
         <form method="post" action="register.php" >
@@ -46,7 +47,7 @@ session_destroy();
         </form>
     <hr/>
 
-    //the form for Returning User to login
+    <!--the form for Returning User to login-->
     <h3>Returning User Login</h3>
         <form method="post" action="VerifyLogin.php" >
         <p>Enter your e-mail address: <input type="text" name="email" /></p>
