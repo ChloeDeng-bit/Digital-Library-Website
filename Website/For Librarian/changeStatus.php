@@ -1,141 +1,150 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>librarain main page</title>
-<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
-</head>
-<body>
-
-<h1>librarain  page</h1>
-<h2>library resource status change</h2>
+<!-- This file is to change the status of the book, if all the information of the book has been set and get,
+save the information. If the book status is in borrow, change the status to avaliable, if the book status is avaliable,
+echo the form for librarian to input borrower's information. If the borrower's information has been submit, 
+then add borrower's information and all the other relative information for borrowing. -->
 
 <?php
 session_start();
-$name="";
-$borrowerID="";
-$Body = "";
-$error = 0;
-$userID = 0;
-$input=true;
+?>
 
-if(isset($_POST['submit'])){ // Check if form was submitted
+<!DOCTYPE html>
 
-    $name = $_POST['borrower']; // Get input text
-    $borrowerID=$_POST['borrowerID'];
-    //$message = "Success! You entered: " . $name;
-    //echo $message;
-    $input=false;
-}
+<html>
 
-if (isset($_SESSION['userID'])){
+    <head>
+        <title>librarain main page</title>
+        <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+    </head>
 
-	$userID = $_SESSION['userID'];
-    //echo "session set successfull";
-}
-else {
-	$Body .= "<p>You have not logged in or registered. Please return to the <a href='registerAndLogin.php'>Registration / Log In page</a>.</p>";
-	++$error;
-    echo "$error";
-}
+    <body>
 
-if(isset($_GET["status"])){
-    $status=$_GET["status"];
-    //echo "status is ".$status;
-}
-else{
-    echo"didn't get status from GET";
-}
-if(isset($_GET["bookID"])){
-    $bookID=$_GET["bookID"];
-    //echo "book id is ".$bookID;
-}
-else{
-    echo"didn't get book id from GET";
-}
+        <h1>librarain  page</h1>
+        <h2>library resource status change</h2>
 
-if(isset($_GET["costP"])){
-    $costP=$_GET["costP"];
-    //echo "cost is ".$costP;
-}
-else{
-    echo"didn't get book id from GET";
-}
-if($input==false){
+        <?php       
+        $name="";
+        $borrowerID="";
+        $Body = "";
+        $error = 0;
+        $userID = 0;
+        $input=true;
 
-    $date=date('Y-m-d');
-    $expire=date('Y-m-d', strtotime($date. ' +30 day'));
-    $tcost=$costP*30;
-    
-    include("inc_digitalLibrary.php");
-    //echo $expire;
-    //echo serialize($conn);
-    $SQL = "UPDATE resource
-    SET status='in_borrow', borrowerID= '".$borrowerID."' ,borrower='".$name."' ,borrow_time='".$date."' ,total_cost='".$tcost."' ,expire_date='".$expire."'
-    WHERE bookNo ='".$bookID."' ";
-    //$qRes = $this->conn->query($sql);
-    if(mysqli_query($conn, $SQL)){
-        echo "<h3>the status of this book has been changed to in borrow.</h3>";
-    }
-    else{
-        die("changing status error: ".mysqli_error($conn));
-    }
-}
-if ($error == 0) {
-    
-        $conn = mysqli_connect("localhost", "root","root","digital_library");
+        // Check if borrower's information has been submitted
+        if(isset($_POST['submit'])){ 
 
-        if(!$conn){
-        echo "conection error".mysqli_connect_error();
-        $Body .= "error: ".mysqli_connect_error();
-        $Body .= "<p>Unable to execute the query.</p>\n";
-        ++$errors;
+            // save the borrower information
+            $name = $_POST['borrower']; 
+            $borrowerID=$_POST['borrowerID'];
+            //no need form to input borrower's information
+            $input=false;
+        }
+        
+        //keep the session
+        if (isset($_SESSION['userID'])){
 
-    }
-    if($status=="in_borrow"){
-        //$status="avaliable";
-        $TableName = "resource";
-        $SQLstring = "UPDATE $TableName
-        SET borrower=null, borrowerID=null , borrow_time=null,expire_date=null,total_cost=null, status='avaliable'
-        WHERE bookNo ='".$bookID."' ";
-        //$SQLstring = "SELECT count(*) FROM $TableName" . " where email=$email";
-        if(mysqli_query($conn, $SQLstring)){
-            echo "<h3>the status of this has been changed to avaliable</h3>";
+            $userID = $_SESSION['userID'];
+        }
+        else {
+            $Body .= "<p>You have not logged in or registered. Please return to the <a href='registerAndLogin.php'>Registration / Log In page</a>.</p>";
+            ++$error;
+            echo "$error";
+        }
+        
+        //check if also receive other book relative information and save the information
+        if(isset($_GET["status"])){
+            $status=$_GET["status"];
         }
         else{
-            die("changing status error: ".mysqli_error($conn));
+            echo"didn't get status from GET";
+            exit;
         }
-    }
-    if($status=="avaliable"){
-        if($input==true)
-        {$Body .='<form method="post" action="">';
-        
-        $Body .='<p>Please enter the name of borrower: <input type="text" name="borrower" /></p>';
-        $Body .='<p>Please enter the name of borrower ID: <input type="text" name="borrowerID" /></p>';
-        //$Body .='<p>please enter the date of borrowing: <input type="date" name="password" /></p>';
-        $Body .='<p><input type="submit" name="submit" value="submit" /></p>';
-        $Body .='</form>';}
 
-    }   
+        if(isset($_GET["bookID"])){
+            $bookID=$_GET["bookID"];
+        }
+        else{
+            echo"didn't get book id from GET";
+            exit;
+        }
 
-}
+        if(isset($_GET["costP"])){
+            $costP=$_GET["costP"];
+        }
+        else{
+            echo"didn't get book id from GET";
+            exit;
+        }
 
-	$Body .= "<p>Return to the <a href='libraran.php?". SID . "'>Main page</a> page.</p>\n";
+        //if borrower's information has been submitted, then append borrower's information to the book
+        if($input==false){
 
-	$Body .= "<p>Please <a href='registerAndLogin.php'>Register or Log In</a> to use this page.</p>\n";
+            $date=date('Y-m-d');
+            $expire=date('Y-m-d', strtotime($date. ' +30 day'));
+            $tcost=$costP*30;
+            
+            include("inc_digitalLibrary.php");
 
-// if ($errors == 0)
-// 	setcookie("LastRequestDate", urlencode($DisplayDate), time()+60*60*24*7); //, "/examples/internship/");
-?>
-<!DOCTYPE html>
-<html>
-<head>
-<title>library</title>
-<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
-</head>
-<body>
+            //add borrower's information as well as borrow data, cost, expire date
+            $SQL = "UPDATE resource
+            SET status='in_borrow', borrowerID= '".$borrowerID."' ,borrower='".$name."' ,borrow_time='".$date."' ,total_cost='".$tcost."' ,expire_date='".$expire."'
+            WHERE bookNo ='".$bookID."' ";
 
-<?php
-echo $Body;
-?>
-</body>
+            if(mysqli_query($conn, $SQL)){
+                $Body .= "<h3>the status of this book has been changed to in borrow.</h3>";
+            }
+            else{
+                die("changing status error: ".mysqli_error($conn));
+            }
+        }
+
+        //if connect to database successfully
+        if ($error == 0) {
+            
+                $conn = mysqli_connect("localhost", "root","root","digital_library");
+
+                if(!$conn){
+                $Body .= "error: ".mysqli_connect_error();
+                $Body .= "<p>Unable to execute the query.</p>\n";
+                ++$errors;
+
+            }
+
+            //check the book status, if the book is in borrow then change the status to avaliable
+            if($status=="in_borrow"){
+
+                $TableName = "resource";
+                $SQLstring = "UPDATE $TableName
+                SET borrower=null, borrowerID=null , borrow_time=null,expire_date=null,total_cost=null, status='avaliable'
+                WHERE bookNo ='".$bookID."' ";
+                if(mysqli_query($conn, $SQLstring)){
+                    $Body .="<h3>the status of this has been changed to avaliable</h3>";
+                }
+                else{
+                    die("changing status error: ".mysqli_error($conn));
+                }
+            }
+
+            //if the book status is avaliable and librarian has not input borrower's information
+            //Then present the form to for librarian to submit the borrower's information
+            if($status=="avaliable"){
+                if($input==true)
+                {$Body .='<form method="post" action="">';
+                
+                $Body .='<p>Please enter the name of borrower: <input type="text" name="borrower" /></p>';
+                $Body .='<p>Please enter the name of borrower ID: <input type="text" name="borrowerID" /></p>';
+                $Body .='<p><input type="submit" name="submit" value="submit" /></p>';
+                $Body .='</form>';}
+
+            }   
+
+        }
+
+            $Body .= "<p>Return to the <a href='libraran.php?". SID . "'>Main page</a> page.</p>\n";
+
+            $Body .= "<p>Please <a href='registerAndLogin.php'>Register or Log In</a> to use this page.</p>\n";
+
+        echo $Body
+        ?>
+
+    </body>
 </html>
