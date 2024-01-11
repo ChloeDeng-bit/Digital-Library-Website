@@ -1,7 +1,9 @@
-// This file is to check the register information format and report the error, once all the format correct save the user information into database
+<!--This file is to check the register information format and report the error.
+Once all the format correct save the user information into database-->
 
-//initialize a session 
+
 <?php
+//initialize a session 
 session_start();
 ?>
 
@@ -21,7 +23,7 @@ session_start();
         $errors = 0;
         $email = "";
 
-        //verify if all the input is in the right format
+        //verify if all the input in the right form
         if(empty($_POST['first'])||empty($_POST['last'])){
             ++$errors;
             echo "<p>You need to enter your name.</p>\n";  
@@ -134,7 +136,7 @@ session_start();
             
         }
 
-        //if the data save successfully then the user back to a different web page according to their user type
+        //if the data save successfully then user back to different web page according to their user type
         if ($errors == 0) {
             if($type=="librarian"){
                 echo "<form method='post' " . " action='librarian.php?" . SID . "'>\n";
