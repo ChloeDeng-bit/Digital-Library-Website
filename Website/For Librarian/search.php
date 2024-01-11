@@ -1,15 +1,29 @@
+<!-- This file is for libraian to search book resource by input keyword, and display all the relative book -->
 <?php
-//session_start();
+session_start();
 $error=0;
 $Body="";
 $input=true;
 
-if(isset($_POST['submit'])){ // Check if form was submitted
+//keep the session
+if (isset($_SESSION['userID'])){
 
-    $keyword = $_POST['keyword']; // Get input text
+    $userID = $_SESSION['userID'];
+}
+else {
+    $Body .= "<p>You have not logged in or registered. Please return to the <a href='registerAndLogin.php'>Registration / Log In page</a>.</p>";
+    ++$error;
+    echo "$error";
+}
+
+// Check if the keyword has been submitted 
+if(isset($_POST['submit'])){ 
+    // save the keyword
+    $keyword = $_POST['keyword']; 
     $message = "<h3>You have entered the keyword: " . $keyword."</h3>";
     echo $message;
     $input=false;
+
     //then start to search
     include("inc_digitalLibrary.php");
     $TableName = "resource";
@@ -19,7 +33,8 @@ if(isset($_POST['submit'])){ // Check if form was submitted
     while (($Row = mysqli_fetch_assoc($qRes))!= FALSE)
         $avaliable[] = $Row;
     mysqli_free_result($qRes);
-//mysqli_close($conn);
+
+//display all the relative book information
 echo "<h1>the related resource</h1>";
 echo "<br/>";
 //table and header
@@ -45,7 +60,6 @@ foreach ($avaliable as $a) {
 
             
             echo $a['status']    .":<a href='changeStatus.php?" . SID ."&status=" . $a['status'] ."&costP=" . $a['cost_per_day'] . "&bookID=" . $a['bookNo'] . "'>"."change status</a>";
-            //echo "<a href='myDelete.php?" . SID . "&FCode=" . $facility['FCode'] ."&StudentID=" . $studentID . "'>enrollment</a>";
     echo "</td>\n";
     echo "</tr>\n";
 
@@ -57,26 +71,16 @@ else if (mysqli_num_rows($qRes) == 0) {
   echo "<p>sorry no resource can be found according to your key word, please try another keyword.</p>";
 }
 }
-if (isset($_SESSION['userID'])){
 
-	$userID = $_SESSION['userID'];
-    //echo "session set successfull";
-}
-else {
-	$Body .= "<p>You have not logged in or registered. Please return to the <a href='registerAndLogin.php'>Registration / Log In page</a>.</p>";
-	++$error;
-    echo "$error";
-}
-if($input==true){ 
-   $Body .='<form method="post" action="" >';
-        
+//if librarian hasn't input keyword, display the form for librarian to input keyword
+if($input==true)&&($error==0){ 
+    $Body .='<form method="post" action="" >';      
     $Body .='<p>Please enter the key word to search the resource: <input type="text" name="keyword" /></p>';
-    //$Body .='<p>please enter the date of borrowing: <input type="date" name="password" /></p>';
     $Body .='<p><input type="submit" name="submit" value="submit" /></p>';
     $Body .='</form>';
 }
 
-    echo $Body;
+echo $Body;
 
 
 ?>
