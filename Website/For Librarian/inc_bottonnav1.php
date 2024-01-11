@@ -1,4 +1,4 @@
-
+<!--this file is the navigation part of the home page-->
 <table border='0' width='500%'>
     <tr>
         <th style="width:300px;font-size:20px">
